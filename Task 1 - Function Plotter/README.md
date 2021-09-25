@@ -3,7 +3,7 @@
 # Function Plotter
 It can plot polynomial functions in x within a specific range.
 Supported operators: +, -, *, /, ^.
-Does not support functions in x such as trigonomitric functions (`sin(x)` for example) nor other functions in x (`sqrt(x)` for example) 
+Does not support functions in x such as trigonometric functions (`sin(x)` for example) nor other functions in x (`sqrt(x)` for example) 
 
 # Dependencies
 PySimpleGUI, Sympy, Matplotlib, Numpy, and Pytest. 
