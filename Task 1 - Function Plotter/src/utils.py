@@ -1,4 +1,5 @@
 import re
+from tkinter import Message
 from traceback import print_stack
 import matplotlib
 
@@ -11,9 +12,9 @@ import numpy as np
 import sympy
 import numpy
 
-from PySimpleGUI.PySimpleGUI import WINDOW_CLOSED, popup
+from PySimpleGUI.PySimpleGUI import R, WINDOW_CLOSED, popup
 
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
 
 from matplotlib.figure import Figure
 
@@ -24,13 +25,25 @@ ERRORS: Dict[str, str] = dict(
     {
         'no x': 'The function does not contain the variable x!',
         'consec': '2 or more consecutive x symbols or arithmetic symbols.',
-        'invalid symbol': 'The function contains something other than x, +, -, *, /, ^, and **. Please make sure the function contains only these symbols',
-        'parse error': 'xMin or xMax are invalid numbers, please make sure they\'re valid numbers',
+        'invalid symbol': 'The function contains something other than x, +, -, *, /, and ^. Please make sure the function contains only these symbols',
+        'parse error': 'x_min or x_max are invalid numbers, please make sure they\'re valid numbers',
         'malformed': 'Malformed function, please make sure there are no extra arithmetic operators at the end of the function, or that x is not preceeded or followed directly by a number',
     }
 )
 
 SUCCESS = 'success'
+
+HelpAbout = '''Polynomial function plotter
+Allowed operators: +, -, *, /, ^.
+Only the variable x is allowed.
+Does not support functions such as sin(), cos(), tan(), etc..
+Supports fractions in the form `x/y`.
+Built using PySimpleGUI, Sympy, Matplotlib, tkinter, and numpy.
+'''
+default_fn = '2*x^2'
+default_x_min = '-50'
+default_x_max = '50'
+
 
 # Creates the window and returns the needed variables to plot
 # Can be parametrized to easily change element sizes and placeholder text if needed
@@ -38,25 +51,38 @@ SUCCESS = 'success'
 
 
 def create_window() -> Tuple[FigureCanvasTkAgg, Figure, plt.axes, sg.Window]:
+
+    # Apply a theme to make things look a bit better
+    theme = 'Reddit'
+    sg.theme(theme)
+
     # define the window layout
     layout = [
         [sg.Canvas(key='-CANVAS-')],
-        [sg.InputText('2*x^2', key='fn', size=24)],
-        [[sg.Text('x Min'), sg.Input('-50', key='x_min', size=4),
-          sg.Text('x Max'), sg.Input('50', key='x_max', size=4)]],
-        [sg.Button('Plot!', bind_return_key=True)],
+        [
+            sg.Frame(layout=[[sg.InputText(default_fn, key='fn', size=20)]
+                             ],                     title='Function'),
+            sg.Frame(layout=[
+                [
+                    sg.Text('x Min', justification='center'), sg.Input(default_x_min, key='x_min', size=5,justification='center'),
+                    sg.Text('x Max', justification='center'), sg.Input(default_x_max, key='x_max', size=5, justification='center')
+                ]
+            ], title='Limits')
+        ],
+        [sg.Button('Plot!', bind_return_key=True), sg.Button('Help/About')]
     ]
+
 
     # create the form and show it without the plot
     window = sg.Window('MasterMacro(TM) Plotter 6000',
                        layout, finalize=True, element_justification='center', font='Helvetica 18')
 
+
     # Initialize figure and add the plot to the window
-    fig = matplotlib.figure.Figure(figsize=(3, 3), dpi=100)
-    plot = None
+    fig = matplotlib.figure.Figure(figsize=(6, 4), dpi=100)
     fig_canvas_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
 
-    return fig_canvas_agg, fig, plot, window
+    return fig_canvas_agg, fig,  window
 
 
 # Matplotlib helper function
@@ -70,35 +96,46 @@ def draw_figure(canvas, figure):
 # Parses x_min and x_max to ensure they're proper floats
 
 
-def validate_input(input_fn: str, xMin: str, xMax: str) -> Tuple[str, float, float]:
+def validate_input(input_fn: str, x_min: str, x_max: str) -> Tuple[List[str], float, float]:
+
+    errors = []
+    input_fn = input_fn.lower()
     # Check if function does not contain x
     if 'x' not in input_fn:
-        return ERRORS['no x'], None, None
+        errors.append(ERRORS['no x'])
 
     # If there are 2 or more consecutive x's
-    elif re.search(r"[x]{2,}", input_fn) is not None:
-        return ERRORS['consec'], None, None
+    if re.search(r"[x]{2,}", input_fn) is not None:
+        errors.append(ERRORS['consec'])
 
     # Check if any of the legal symbols is duplicated two or more times consecutively
-    elif re.search(r"[+-/*\^]{2,}", input_fn) is not None:
-        return ERRORS['consec'], None, None
+    if re.search(r"[+-/*\^]{2,}", input_fn) is not None:
+        errors.append(ERRORS['consec'])
 
     # Check if function contains anything other than x, +, -, *, ^, / and whitespace
-    elif re.search(r"[^x+-/^*0-9 ()]", input_fn) is not None:
-        return ERRORS['invalid symbol'], None, None
+    if re.search(r"[^x+-/^*0-9 ()]", input_fn) is not None:
+        errors.append(ERRORS['invalid symbol'])
 
     # Check if x is preceeded or followed directly by a number (2x or x2)
-    elif re.search(r"(?=[\dx]*\d)\d*x\d*", input_fn) is not None:
-        return ERRORS['malformed'], None, None
+    if re.search(r"(?=[\dx]*\d)\d*x\d*", input_fn) is not None:
+        errors.append(ERRORS['malformed'])
 
-    # Parse xMin and xMax
+    # Check if the function ends with an operator (+, -, *, /, ^)
+    if re.search(r"[*/+-]$", input_fn):
+        errors.append(ERRORS['malformed'])
+
+    # Parse x_min and x_max
     try:
-        xMin = float(xMin)
-        xMax = float(xMax)
+        x_min = float(x_min)
+        x_max = float(x_max)
     except ValueError:
-        return ERRORS['parse error'], None, None
+        errors.append(ERRORS['parse error'])
 
-    return SUCCESS, xMin, xMax
+    if(len(errors) == 0):
+        errors.append(SUCCESS)
+        return errors, x_min, x_max
+    else:
+        return errors, None, None
 
 # Takes the user input and objects required to draw to the figure and returns a success/error code
 
@@ -106,14 +143,11 @@ def validate_input(input_fn: str, xMin: str, xMax: str) -> Tuple[str, float, flo
 def plot_user_fn(fn: str, x_min: str, x_max: str, fig_canvas_agg: FigureCanvasTkAgg,
                  fig: Figure) -> str:
 
-    # Convert the function string to lowercase to avoid checking for uppercase
-    fn = fn.lower()
-
     # Validate input
-    valid, xMin, xMax = validate_input(fn, x_min, x_max)
+    error_codes, x_min, x_max = validate_input(fn, x_min, x_max)
 
     # Process input if valid
-    if valid == SUCCESS:
+    if len(error_codes) == 1 and error_codes[0] == SUCCESS:
 
         # Define x as a variable
         x = sympy.symbols('x')
@@ -126,15 +160,17 @@ def plot_user_fn(fn: str, x_min: str, x_max: str, fig_canvas_agg: FigureCanvasTk
 
             # Calculate axis values for plotting
             lamb = sympy.lambdify(x, parsed_expr, modules=['numpy'])
-            x_axis = numpy.linspace(xMin, xMax)
+            x_axis = numpy.linspace(x_min, x_max)
             y_axis = lamb(x_axis)
 
+            # Get current plots
+            # If there are none, add one
             axes = fig.get_axes()
             if len(axes) == 0:
                 fig.add_subplot(111)
                 axes = fig.get_axes()
 
-
+            # Update plot by clearing and plotting to it
             ax = axes[0]
             ax.cla()
             ax.plot(x_axis, y_axis)
@@ -142,13 +178,22 @@ def plot_user_fn(fn: str, x_min: str, x_max: str, fig_canvas_agg: FigureCanvasTk
             # Draw to the GUI
             fig_canvas_agg.draw()
 
+        # Sympy can't parse the function
         except SyntaxError:
-            valid = ERRORS['malformed']
+            error_codes.append(ERRORS['malformed'])
 
         # In case an exception occured
         # Should allow to return specific error codes/messages for different exceptions later on if needed
         finally:
-            return valid
+            return error_codes
 
     # If the function is invalid
-    return valid
+    return error_codes
+
+
+def format_error_message(error_codes: List[str]) -> str:
+    message = ''
+    for i, error in enumerate(error_codes):
+        message += f"Error #{i}: {error}\n\n"
+
+    return message
