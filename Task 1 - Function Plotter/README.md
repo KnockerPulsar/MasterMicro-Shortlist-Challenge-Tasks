@@ -15,4 +15,20 @@ Assuming you have `Pytest` installed, just set your current directory as the pro
 * Swapping out the GUI framework: While PySimpleGUI is a great framework to get your application up and running, I believe that you probably want to use another framework that allows for more customizability at the cost of development speed. I just happened to use this since it's the fastest way I know of creating a GUI application.
   
 * More complex function support: Supporting functions (at least what Sympy allows) in x should be possible if you remove a couple of validation tests in `validate_input`, but that would also allow for invalid functions with undefined variables to be entered too.
-  
+
+# Snapshots
+
+## Initial view
+![Initial View](snapshots/InitialView.PNG)  
+
+## Some correct inputs
+![Correct 1](snapshots/1.PNG)
+![Correct 2](snapshots/2.PNG)
+![Correct 3](snapshots/3.PNG)
+
+# Some incorrect inputs
+
+![Incorrect 1](snapshots/w1.PNG)
+![Incorrect 2](snapshots/w2.PNG)
+![Incorrect 3](snapshots/w3.PNG)
+![Incorrect 4](snapshots/w4.PNG)

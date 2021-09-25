@@ -1,3 +1,4 @@
+from os import error
 import re
 from tkinter import Message
 from traceback import print_stack
@@ -25,9 +26,10 @@ ERRORS: Dict[str, str] = dict(
     {
         'no x': 'The function does not contain the variable x!',
         'consec': '2 or more consecutive x symbols or arithmetic symbols.',
-        'invalid symbol': 'The function contains something other than x, +, -, *, /, and ^. Please make sure the function contains only these symbols',
+        'invalid symbol': 'The function contains something other than x, +, -, *, /, ., and ^. Please make sure the function contains only these symbols',
         'parse error': 'x_min or x_max are invalid numbers, please make sure they\'re valid numbers',
         'malformed': 'Malformed function, please make sure there are no extra arithmetic operators at the end of the function, or that x is not preceeded or followed directly by a number',
+        'key error' : 'Function contains division by zero or other logical error, please modify the function.'
     }
 )
 
@@ -113,7 +115,7 @@ def validate_input(input_fn: str, x_min: str, x_max: str) -> Tuple[List[str], fl
         errors.append(ERRORS['consec'])
 
     # Check if function contains anything other than x, +, -, *, ^, / and whitespace
-    if re.search(r"[^x+-/^*0-9 ()]", input_fn) is not None:
+    if re.search(r"[^x+/^*0-9. ()-]", input_fn) is not None:
         errors.append(ERRORS['invalid symbol'])
 
     # Check if x is preceeded or followed directly by a number (2x or x2)
@@ -149,6 +151,8 @@ def plot_user_fn(fn: str, x_min: str, x_max: str, fig_canvas_agg: FigureCanvasTk
     # Process input if valid
     if len(error_codes) == 1 and error_codes[0] == SUCCESS:
 
+        error_codes.remove(error_codes[0])
+
         # Define x as a variable
         x = sympy.symbols('x')
 
@@ -182,10 +186,18 @@ def plot_user_fn(fn: str, x_min: str, x_max: str, fig_canvas_agg: FigureCanvasTk
         except SyntaxError:
             error_codes.append(ERRORS['malformed'])
 
+        except KeyError:
+            error_codes.append(ERRORS['key error'])
+
+        else:
+            error_codes.append(SUCCESS)
+
         # In case an exception occured
         # Should allow to return specific error codes/messages for different exceptions later on if needed
         finally:
             return error_codes
+
+
 
     # If the function is invalid
     return error_codes
