@@ -2,16 +2,19 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 public class Component {
+    public HashMap<String, String> netlist = new HashMap<>();
     String type, id;
-    HashMap<String,String> netlist = new HashMap<>();
 
-    // https://stackoverflow.com/questions/9625297/initializing-hashtables-in-java/9625403
-    // Potential memory leak?
-    public HashMap<String, Float > value = new HashMap<>(){
-        {
-            put("default", 100f);
-            put("min", 10f);
-            put("max", 1000f);
-        }
-    };
+    Component(String type, String id, HashMap<String, String> netlist) {
+        this.type = type;
+        this.id = id;
+        this.netlist = netlist;
+    }
+
+    Component(Component comp) {
+        this.type = comp.type;
+        this.id = comp.id;
+        this.netlist = comp.netlist;
+    }
 }
+

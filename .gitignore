@@ -1,3 +1,5 @@
 
 *.pyc
+*.class
+/Task 2 - Topology API/target/
 
