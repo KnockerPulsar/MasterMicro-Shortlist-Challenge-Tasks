@@ -1,19 +1,13 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.Files;
+import java.util.*;
 
 public class Topology {
     // Note that GSON ignores static fields during serialization and deserialization
-
-    // Where JSON files will be written.
-    public static String writeDir = "/src/main/resources/";
 
     public static HashMap<String, Component> netLists = new HashMap<>();
 
@@ -27,15 +21,41 @@ public class Topology {
     @Expose String id;
     @Expose Component[] components;
 
-    // Not exposed
+    // Not exposed, for internal use only
     HashMap<String, ArrayList<Component>> connectedToNode;
 
-    // fileName should be relative
-    // Takes the file name to be read and loads the topology into an object
-    // Registers the object if it's not memory already.
-    // Can also overwrite the object if it's already in memory but that's risky.
-    // It really depends on how the rest of the program works.
-    // Worst case scenario, it overwrites the object in memory modifying every instance of this topology.
+    Topology(String id, Component[] components)
+    {
+        this.id = id;
+
+        // Copy the given array, not point to the same data
+        this.components = components.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Topology topology = (Topology) o;
+        return Objects.equals(id, topology.id) && Arrays.deepEquals(components, topology.components);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id);
+        result = 31 * result + Arrays.hashCode(components);
+        return result;
+    }
+
+    /*
+         the filepath proceeding `fileName` should be relative
+         Takes the file name to be read and loads the topology into an object
+         Registers the object if it's not memory already.
+
+         Can also overwrite the object if it's already in memory but that's risky.
+         It really depends on how the rest of the program works.
+         Worst case scenario, it overwrites the object in memory modifying every instance of this topology.
+         */
     static Result readJSON(String fileName) {
         File file = new File(fileName);
         if (file.exists()) {
@@ -71,7 +91,7 @@ public class Topology {
     // Takes the ID of the topology we want to write
     // Writes a file with the same name as that id in json format
     // Can be easily modified to accept a string as the file's name, but the id works fine.
-    static Result writeJSON(String topologyID) {
+    static Result writeJSON(String topologyID, String writeDir) {
         if (inMemory.containsKey(topologyID)) {
 
             Topology top = Topology.inMemory.get(topologyID);
@@ -82,8 +102,7 @@ public class Topology {
             try {
 
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                File temp = new File("");
-                file = new File(temp.getAbsolutePath() + Topology.writeDir, topologyID+".json");
+                file = new File(writeDir, topologyID+".json");
 
                 if(!file.exists())
                     file.createNewFile();
@@ -91,6 +110,7 @@ public class Topology {
                 FileWriter writer = new FileWriter(file);
                 gson.toJson(top, writer);
                 writer.close();
+
                 return new Result(true, top, file.getAbsolutePath() );
 
             } catch (IOException e) {
@@ -104,7 +124,7 @@ public class Topology {
     // Converts the values of the `inMemory` map to an ArrayList
     // Can return the whole hashmap if needed.
     static ArrayList<Topology> queryTopologies() {
-        return new ArrayList<Topology>(inMemory.values());
+        return new ArrayList<>(inMemory.values());
     }
 
     // Removes the topology from `inMemory` and returns it if needed.
@@ -118,7 +138,7 @@ public class Topology {
     static ArrayList<Component> queryDevices(String topologyID) {
         if (inMemory.containsKey(topologyID)) {
             return new
-                    ArrayList<Component>(
+                    ArrayList<>(
                     Arrays.asList(inMemory.get(topologyID).components)
             );
         } else return null;

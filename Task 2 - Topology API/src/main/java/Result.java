@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Result {
 
     boolean success;
@@ -20,5 +22,18 @@ public class Result {
     {
         this.success = success;
         this.writePath = writePath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Result result = (Result) o;
+        return success == result.success && Objects.equals(returned, result.returned) && Objects.equals(writePath, result.writePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(success, returned, writePath);
     }
 }

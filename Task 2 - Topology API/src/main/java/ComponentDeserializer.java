@@ -3,20 +3,21 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
+// Might be better if the field values are not hardcoded?
+// Perhaps in a real production environment, you'd read those from a config file.
 public class ComponentDeserializer implements JsonDeserializer {
 
     @Override
     public Component deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+
         JsonObject jsonObject = json.getAsJsonObject();
         String type = jsonObject.get("type").getAsString();
+        HashMap<String, String> netlist = Utils.convertJSONtoHashMap(jsonObject.get("netlist").getAsJsonObject());
 
         switch (type) {
             case "resistor" -> {
-                HashMap<String, Float> resistance =
-                        resistor.getResistance(jsonObject.get("resistance").getAsJsonObject());
-
-                HashMap<String, String> netlist =
-                        resistor.getNetlist(jsonObject.get("netlist").getAsJsonObject());
+                HashMap<String, Double> resistance =
+                        Utils.convertJSONtoHashMap(jsonObject.get("resistance").getAsJsonObject());
 
                 return new resistor(
                         new Component(
@@ -28,11 +29,8 @@ public class ComponentDeserializer implements JsonDeserializer {
                 );
             }
             case "nmos" -> {
-                HashMap<String, Float> m1 =
-                        nmos.getM1(jsonObject.get("m(l)").getAsJsonObject());
-
-                HashMap<String, String> netlist =
-                        nmos.getNetlist(jsonObject.get("netlist").getAsJsonObject());
+                HashMap<String, Double> m1 =
+                        Utils.convertJSONtoHashMap(jsonObject.get("m(l)").getAsJsonObject());
 
                 return new nmos(
                         new Component(

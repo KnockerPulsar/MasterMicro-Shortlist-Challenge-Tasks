@@ -5,21 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7026d357-befb-4ff4-bae9-a8123dba1e18" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ComponentDeserializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Utils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/Tests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Component.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ComponentDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ComponentDeserializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Result.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Topology.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Topology.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/nmos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nmos.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/resistor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resistor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Component$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Component.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Topology.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/nmos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/resistor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/topology.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/top1.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/topology.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Component.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Component.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Topology.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Topology.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/nmos.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/nmos.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/resistor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/resistor.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +54,13 @@
     <setting file="jar://$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.8/gson-2.8.8-sources.jar!/com/google/gson/Gson.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.8/gson-2.8.8-sources.jar!/com/google/gson/stream/JsonReader.java" root0="SKIP_INSPECTION" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="usePluginRegistry" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="1yeYDW3djFmKlUPGFY61SIdDVrR" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -64,17 +74,31 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/test/resources" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.25723222" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/java" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean" />
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.TopologyAPITests">
     <configuration name="main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main" />
       <module name="Task 2 - Topology API" />
@@ -82,17 +106,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TopologyAPITests" type="JUnit" factoryName="JUnit">
+      <module name="Task 2 - Topology API" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.main" />
+      <item itemvalue="JUnit.TopologyAPITests" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.main" />
@@ -111,7 +151,8 @@
       <workItem from="1632613577712" duration="3147000" />
       <workItem from="1632666231629" duration="14799000" />
       <workItem from="1632700509899" duration="55000" />
-      <workItem from="1632700842263" duration="493000" />
+      <workItem from="1632700842263" duration="700000" />
+      <workItem from="1632850221607" duration="17615000" />
     </task>
     <servers />
   </component>
@@ -140,18 +181,48 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ComponentDeserializer.java</url>
-          <line>9</line>
+          <line>12</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ComponentDeserializer.java</url>
-          <line>30</line>
+          <line>31</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
-        <line-breakpoint type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/nmos.java</url>
-          <line>34</line>
-          <option name="timeStamp" value="12" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/main.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Topology.java</url>
+          <line>104</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Topology.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar:///opt/jdk/jdk-15.0.2+7/lib/src.zip!/java.base/java/util/Arrays.java</url>
+          <line>4605</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/resistor.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar:///opt/jdk/jdk-15.0.2+7/lib/src.zip!/java.base/java/util/AbstractMap.java</url>
+          <line>475</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Utils.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -161,6 +232,13 @@
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
+      <configuration name="JUnit">
+        <watch expression="netlist.equals(component.netlist)" />
+        <watch expression="resistance.equals(resistor.resistance)" />
+        <watch expression="m.get(key)" />
+        <watch expression="Arrays.deepEquals(components, topology.components)" />
+        <watch expression="gson.fromJson(jsonMap, type)" />
+      </configuration>
       <configuration name="Application">
         <watch expression="temp.getAbsolutePath().concat(Topology.writeDir)" />
         <watch expression="file" language="JAVA" />

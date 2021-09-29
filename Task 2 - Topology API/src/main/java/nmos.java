@@ -1,43 +1,35 @@
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class nmos extends Component {
-    // https://stackoverflow.com/questions/9625297/initializing-hashtables-in-java/9625403
-    // Potential memory leak?
-    public HashMap<String, Float > ml = new HashMap<>(){
-        {
-            put("default", 1.5f);
-            put("min", 1f);
-            put("max", 2f);
-        }
-    };
 
-    public nmos(Component comp, HashMap<String , Float> ml)
-    {
+    // To set the name as it was in the read JSON
+    @SerializedName(value = "m(l)")
+    public HashMap<String, Double> ml = new HashMap<>();
+
+    public nmos(Component comp, HashMap<String, Double> ml) {
         super(comp);
         this.ml = ml;
     }
 
-    public static HashMap<String, String> getNetlist(JsonObject netlistJson)
-    {
-        HashMap<String, String> netlist = new HashMap<>();
-
-        netlist.put("drain", netlistJson.get("drain").getAsString());
-        netlist.put("gate", netlistJson.get("gate").getAsString());
-        netlist.put("source", netlistJson.get("source").getAsString());
-
-        return netlist;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        nmos nmos = (nmos) o;
+        return ml.equals(nmos.ml);
     }
 
-    public static HashMap<String, Float > getM1(JsonObject m1Json)
-    {
-        HashMap<String, Float> m1 = new HashMap<>();
-
-        // WARNING: Note that the json file has a type deafult -> default
-        m1.put("deafult", m1Json.get("deafult").getAsFloat());
-        m1.put("min", m1Json.get("min").getAsFloat());
-        m1.put("max", m1Json.get("max").getAsFloat());
-        return m1;
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), ml);
     }
 }

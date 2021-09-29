@@ -16,7 +16,7 @@ public class main {
 
         // Write
         if(top.success) {
-            Result write = Topology.writeJSON(top.returned.id);
+            Result write = Topology.writeJSON(top.returned.id, "src/java/resources/");
         }
 
         // Check loaded topologies
