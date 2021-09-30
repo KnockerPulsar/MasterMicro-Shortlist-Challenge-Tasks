@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-// Didn't know where to put this function in the already existing classes so I just created a class for it.
+// Didn't know where to put this function in the already existing classes, so I just created a class for it.
 public class Utils {
     static <T1, T2> HashMap<T1, T2> convertJSONtoHashMap(JsonObject jsonMap) {
         Gson gson = new Gson();

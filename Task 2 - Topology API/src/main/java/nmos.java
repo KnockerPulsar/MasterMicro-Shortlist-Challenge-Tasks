@@ -1,18 +1,15 @@
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 
 import java.util.HashMap;
 import java.util.Objects;
 
+// Extension of the Component class to handle NMOS transistor values (min, max, and deafult)
+// Yes, "deafult" is a type, I just wanted to stick to the given material.
 public class nmos extends Component {
 
     // To set the name as it was in the read JSON
     @SerializedName(value = "m(l)")
-    public HashMap<String, Double> ml = new HashMap<>();
+    public HashMap<String, Double> ml;
 
     public nmos(Component comp, HashMap<String, Double> ml) {
         super(comp);
@@ -28,8 +25,4 @@ public class nmos extends Component {
         return ml.equals(nmos.ml);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), ml);
-    }
 }

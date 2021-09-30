@@ -5,9 +5,11 @@ import java.util.HashMap;
 
 // Might be better if the field values are not hardcoded?
 // Perhaps in a real production environment, you'd read those from a config file.
+// https://howtodoinjava.com/gson/custom-serialization-deserialization/
 public class ComponentDeserializer implements JsonDeserializer {
 
     @Override
+    // Gets an object of type `Component` then reads the data depending on which child class it is.
     public Component deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
         JsonObject jsonObject = json.getAsJsonObject();

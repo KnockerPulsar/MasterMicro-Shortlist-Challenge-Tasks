@@ -3,33 +3,36 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.util.*;
 
+// Stores which components are connected and how they're connected.
 public class Topology {
     // Note that GSON ignores static fields during serialization and deserialization
 
-    public static HashMap<String, Component> netLists = new HashMap<>();
-
-    // Just a shortcut to (Topology)null since IDEA likes to complain
-    public static Topology empty = null;
-
     // Stores all the loaded topologies
-    private static HashMap<String, Topology> inMemory = new HashMap<>();
+    // public to help with testing
+    public static HashMap<String, Topology> inMemory = new HashMap<>();
 
     // Variables exposed to GSON
-    @Expose String id;
-    @Expose Component[] components;
+    @Expose
+    String id;
+    @Expose
+    ArrayList<Component> components;
 
     // Not exposed, for internal use only
     HashMap<String, ArrayList<Component>> connectedToNode;
 
-    Topology(String id, Component[] components)
-    {
+    Topology(String id, ArrayList<Component> components) {
         this.id = id;
 
         // Copy the given array, not point to the same data
-        this.components = components.clone();
+        this.components = components;
+    }
+
+    public Topology(Topology other) {
+        this.id = other.id;
+        this.connectedToNode = other.connectedToNode;
+        this.components = new ArrayList<>(other.components);
     }
 
     @Override
@@ -37,14 +40,11 @@ public class Topology {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Topology topology = (Topology) o;
-        return Objects.equals(id, topology.id) && Arrays.deepEquals(components, topology.components);
-    }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(id);
-        result = 31 * result + Arrays.hashCode(components);
-        return result;
+        // Since connectedToNode is lazily built,
+        // it might be a bad idea to include it in the equality logic.
+
+        return Objects.equals(id, topology.id) && components.equals(topology.components);
     }
 
     /*
@@ -55,7 +55,7 @@ public class Topology {
          Can also overwrite the object if it's already in memory but that's risky.
          It really depends on how the rest of the program works.
          Worst case scenario, it overwrites the object in memory modifying every instance of this topology.
-         */
+    */
     static Result readJSON(String fileName) {
         File file = new File(fileName);
         if (file.exists()) {
@@ -81,11 +81,12 @@ public class Topology {
             } catch (FileNotFoundException e) {
                 // If for some reason the first check fails.
                 // Shouldn't really execute this branch unless something goes seriously wrong
-                return new Result(false, Topology.empty);
+                // since we already check existence before this block.
+                return Result.Fail;
             }
 
-            return new Result(true, top);
-        } else return new Result(false, Topology.empty);
+            return new Result(true, top,file.getAbsolutePath()+top.id+".json");
+        } else return Result.Fail;
     }
 
     // Takes the ID of the topology we want to write
@@ -95,30 +96,39 @@ public class Topology {
         if (inMemory.containsKey(topologyID)) {
 
             Topology top = Topology.inMemory.get(topologyID);
-            File file;
+
+            File file = new File(writeDir);
+
+            // Check if directory exists
+            if (!file.exists())
+                return Result.Fail;
+
             // write topology into JSON
             // Note that this overwrites the file.
             // This isn't a major issue assuming each topology is uniquely identified by its id
             try {
 
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                file = new File(writeDir, topologyID+".json");
+                file = new File(writeDir, topologyID + ".json");
 
-                if(!file.exists())
+                if (!file.exists())
                     file.createNewFile();
 
                 FileWriter writer = new FileWriter(file);
                 gson.toJson(top, writer);
                 writer.close();
 
-                return new Result(true, top, file.getAbsolutePath() );
+                return new Result(true, top, file.getAbsolutePath());
 
             } catch (IOException e) {
+                // Should probably be logged into a file in a production build
+                // Also, same as with readJSON, shouldn't come here unless something goes seriously wrong.
                 e.printStackTrace();
-                return new Result(false, Topology.empty);
+
+                return Result.Fail;
             }
 
-        } else return new Result(false, Topology.empty);
+        } else return Result.Fail;
     }
 
     // Converts the values of the `inMemory` map to an ArrayList
@@ -130,17 +140,14 @@ public class Topology {
     // Removes the topology from `inMemory` and returns it if needed.
     static Result deleteTopology(String topologyID) {
         if (inMemory.containsKey(topologyID)) {
-            return new Result(true, inMemory.remove(topologyID));
-        } else return new Result(false, Topology.empty);
+            return new Result(true, inMemory.remove(topologyID), null);
+        } else return Result.Fail;
     }
 
     // Checks if the topology is in memory and returns its components as an ArrayList
     static ArrayList<Component> queryDevices(String topologyID) {
         if (inMemory.containsKey(topologyID)) {
-            return new
-                    ArrayList<>(
-                    Arrays.asList(inMemory.get(topologyID).components)
-            );
+            return new ArrayList<>(inMemory.get(topologyID).components);
         } else return null;
     }
 
@@ -149,7 +156,11 @@ public class Topology {
         if (inMemory.containsKey(topologyID)) {
             Topology top = inMemory.get(topologyID);
             top.BuildConnectedToNode();
-            return top.connectedToNode.get(netlistNodeID);
+
+            if (top.connectedToNode.containsKey(netlistNodeID))
+                return top.connectedToNode.get(netlistNodeID);
+            else
+                return null;
         } else return null;
     }
 
@@ -173,7 +184,7 @@ public class Topology {
                     if (!connectedToNode.containsKey(terminalAndNode.getValue())) {
                         connectedToNode.put(
                                 terminalAndNode.getValue(),
-                                new ArrayList<Component>(Arrays.asList(comp))
+                                new ArrayList<>(Arrays.asList(comp))
                         );
                     } else
                         connectedToNode.get(terminalAndNode.getValue()).add(comp);

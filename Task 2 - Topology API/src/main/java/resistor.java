@@ -1,14 +1,10 @@
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Objects;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
+// Extension of the Component class to support resistor resistances (min, max, and default)
 public class resistor extends Component
 {
-    public HashMap<String, Double > resistance = new HashMap<>();
+    public HashMap<String, Double > resistance;
 
     public resistor(Component comp, HashMap<String, Double> resistance)
     {
@@ -23,10 +19,5 @@ public class resistor extends Component
         if (!super.equals(o)) return false;
         resistor resistor = (resistor) o;
         return resistance.equals(resistor.resistance);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), resistance);
     }
 }

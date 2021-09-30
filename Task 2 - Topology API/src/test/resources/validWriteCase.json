@@ -1,0 +1,110 @@
+{
+  "id": "validWriteCase",
+  "components": [
+    {
+      "resistance": {
+        "default": 100.0,
+        "min": 10.0,
+        "max": 1000.0
+      },
+      "type": "resistor",
+      "id": "res1",
+      "netlist": {
+        "t1": "vdd",
+        "t2": "n1"
+      }
+    },
+    {
+      "m(l)": {
+        "min": 1.0,
+        "max": 2.0,
+        "deafult": 1.5
+      },
+      "type": "nmos",
+      "id": "m1",
+      "netlist": {
+        "gate": "vin",
+        "source": "vss",
+        "drain": "n1"
+      }
+    }
+  ],
+  "connectedToNode": {
+    "n1": [
+      {
+        "resistance": {
+          "default": 100.0,
+          "min": 10.0,
+          "max": 1000.0
+        },
+        "type": "resistor",
+        "id": "res1",
+        "netlist": {
+          "t1": "vdd",
+          "t2": "n1"
+        }
+      },
+      {
+        "m(l)": {
+          "min": 1.0,
+          "max": 2.0,
+          "deafult": 1.5
+        },
+        "type": "nmos",
+        "id": "m1",
+        "netlist": {
+          "gate": "vin",
+          "source": "vss",
+          "drain": "n1"
+        }
+      }
+    ],
+    "vdd": [
+      {
+        "resistance": {
+          "default": 100.0,
+          "min": 10.0,
+          "max": 1000.0
+        },
+        "type": "resistor",
+        "id": "res1",
+        "netlist": {
+          "t1": "vdd",
+          "t2": "n1"
+        }
+      }
+    ],
+    "vss": [
+      {
+        "m(l)": {
+          "min": 1.0,
+          "max": 2.0,
+          "deafult": 1.5
+        },
+        "type": "nmos",
+        "id": "m1",
+        "netlist": {
+          "gate": "vin",
+          "source": "vss",
+          "drain": "n1"
+        }
+      }
+    ],
+    "vin": [
+      {
+        "m(l)": {
+          "min": 1.0,
+          "max": 2.0,
+          "deafult": 1.5
+        },
+        "type": "nmos",
+        "id": "m1",
+        "netlist": {
+          "gate": "vin",
+          "source": "vss",
+          "drain": "n1"
+        }
+      }
+    ]
+  }
+}

@@ -1,12 +1,7 @@
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
+// Consider this a scratchpad for experimentation/debugging
 public class main {
     public static void main(String[] args) {
         Gson gson = new Gson();
