@@ -6,7 +6,7 @@ Supported operators: +, -, *, /, ^.
 Does not support functions in x such as trigonometric functions (`sin(x)` for example) nor other functions in x (`sqrt(x)` for example) 
 
 # Dependencies
-PySimpleGUI, Sympy, Matplotlib, Numpy, and Pytest. 
+PySimpleGUI, Sympy, Matplotlib, Numpy, and Pytest.
 
 # Running tests
 Assuming you have `Pytest` installed, just set your current directory as the project's root (`Task 1 - Function Plotter/`) and enter `pytest` into your terminal. Pytest will then go through all files named `test_*.py` and run the functions inside them.
@@ -32,3 +32,6 @@ Assuming you have `Pytest` installed, just set your current directory as the pro
 ![Incorrect 2](snapshots/w2.PNG)
 ![Incorrect 3](snapshots/w3.PNG)
 ![Incorrect 4](snapshots/w4.PNG)
+
+# Functional Diagram
+![Diagram](snapshots/Function%20Plotter%20Diagram.drawio.png)

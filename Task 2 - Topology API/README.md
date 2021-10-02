@@ -21,3 +21,6 @@ A simple topology API made following the specifications in Task 2's PDF. (Not su
 
 # Differences to the given API
 * Instead of making `writeJSON()` write to a static location, I changed the function to take a write path and check if it exists.
+
+# Functional/Class Diagram
+![Diagram](Topology%20API%20Diagraom.drawio.png)

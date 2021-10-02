@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 
-from PySimpleGUI.PySimpleGUI import WINDOW_CLOSED
+from PySimpleGUI import WINDOW_CLOSED
 from utils import create_window, SUCCESS, format_error_message, plot_user_fn, format_error_message, default_fn,default_x_min,default_x_max,  HelpAbout
 
 
